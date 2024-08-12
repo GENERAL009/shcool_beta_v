@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+            pointer-events: none; /* Prevent interaction */
+        }
+
+        .loading h1 {
+            position: relative;
+            font-size: 3em;
+            color: #4a00e0; /* Purple color */
+            z-index: 10;
+            animation: textZoom 1.5s ease-out forwards;
+        }
+
+        .loading .stripe {
+            position: absolute;
+            width: 2px;
+            height: 200px;
+            background: linear-gradient(135deg, #4a00e0, #8e2de2); /* Purple gradient */
+            transform-origin: center;
+            opacity: 0;
+            animation: firework 5s ease-out forwards;
+        }
+
+        .loading .stripe:nth-child(even) {
+            background: linear-gradient(135deg, #00d2d3, #0288d1); /* Green gradient */
+        }
+
+        @keyframes firework {
+            0% {
+                transform: scaleY(1) translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: scaleY(10) translate(calc(100vw * var(--x)), calc(100vh * var(--y)));
+                opacity: 0;
+            }
+        }
+
+        @keyframes textZoom {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.5); /* Increase scale to make the text appear bigger */
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1); /* Return to original size */
+                opacity: 1;
+            }
+        }
+
+        header {
+            text-align: center;
+            background-color: purple;
+            color: white;
+            padding: 3%;
+        }
+
+        .box {
+            display: flex;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+            width: 380px;
+            height: 420px;
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .box::before, .box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 380px;
+            height: 420px;
+            background: linear-gradient(0deg, transparent, transparent, rgb(53, 231, 53), rgb(53, 231, 53), rgb(53, 231, 53));
+            z-index: 1;
+            transform-origin: bottom right;
+            animation: animate 5s linear infinite;
+        }
+
+        .box::after {
+            background: linear-gradient(0deg, transparent, transparent, rgb(220, 13, 220), rgb(220, 13, 220), rgb(220, 13, 220));
+            animation-delay: -3s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .box form {
+            position: absolute;
+            inset: 4px;
+            background: white;
+            padding: 50px 40px;
+            border-radius: 8px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box form h2 {
+            color: black;
+            font-weight: 500;
+            text-align: center;
+            letter-spacing: 0.1em;
+        }
+
+        .box form .inputBox {
+            position: relative;
+
+ition: relative;
+            width: 300px;
+            margin-top: 35px;
+        }
+
+        .box form .inputBox input {
+            position: relative;
+            width: 100%;
+            padding: 20px 10px 10px;
+            background: transparent;
+            outline: none;
+            box-shadow: none;
+            border: none;
+            color: rgba(84, 83, 83, 0.603);
+            font-size: 1em;
+            letter-spacing: 0.05em;
+            transition: 0.5s;
+            z-index: 10;
+        }
+
+        .box form .inputBox span {
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            pointer-events: none;
+            color: rgb(141, 140, 140);
+            font-size: 1em;
+            letter-spacing: 0.05em;
+            transition: 0.5s;
+            z-index: 5; /* Make sure span is above input */
+        }
+
+        .box form .inputBox input:valid ~ span,
+        .box form .inputBox input:focus ~ span {
+            color: black;
+            font-size: 0.75em;
+            transform: translateY(-34px);
+        }
+
+        .box form .inputBox i {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: rgb(0, 0, 0);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: 0.5s;
+            pointer-events: none;
+        }
+
+        .box form button {
+            border: none;
+            outline: none;
+            padding: 9px 25px;
+            background: purple;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            border-radius: 4px;
+            font-weight: 600;
+            width: 200px;
+            margin-top: 55px;
+            position: relative;
+            left: 50px;
+            transition: background-color 0.3s ease;
+        }
+
+        .box form button:hover {
+            background-color: #8e2de2;
+        }
+
+        footer {
+            background-color: rgba(65, 193, 65, 0.963);
+            color: white;
+            text-align: center;
+            position: absolute;
+            width: 100%;
+            padding: 3%;
+            margin-top: 2px;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="loading">
+    <h1>Intello School</h1>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingContainer = document.querySelector('.loading');
+            const numberOfStripes = 50; // Number of stripes
+
+            for (let i = 0; i < numberOfStripes; i++) {
+                const stripe = document.createElement('div');
+                stripe.className = 'stripe';
+                const angle = Math.random() * 2 * Math.PI; // Random angle
+                const x = Math.sin(angle); // Random X direction
+                const y = Math.cos(angle); // Random Y direction
+                stripe.style.setProperty('--x', x);
+                stripe.style.setProperty('--y', y);
+                stripe.style.transform = `rotate(${angle}rad)`; // Set initial rotation
+                loadingContainer.appendChild(stripe);
+            }
+        });
+    </script>
+</div>
+
+<header>
+    <h1>School Management System</h1>
+</header>
+
+<div class="box">
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <h2>Login</h2>
+        <div class="inputBox">
+            <input type="text" name="username" required="required">
+            <span>Username</span>
+            <i></i>
+        </div>
+        <div class="inputBox">
+            <input type="password" name="password" required="required">
+            <span>Password</span>
+            <i></i>
+        </div>
+        <button type="submit">Log in</button>
+    </form>
+</div>
+
+<footer>
+    <div>© 2024 School Management System</div>
+</footer>
+
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+
+document.querySelector('.loading').style.display = 'none';
+        }, 1800); // Duration of the animation in milliseconds
+    };
+</script>
+</body>
+</html>

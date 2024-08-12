@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Journal - {{ subject.name }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Journal for Subject: {{ subject.name }}</h2>
+
+    <form method="get" class="mb-4">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" value="{{ start_date }}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ end_date }}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="submit_date">Submit:</label>
+                <button type="submit" class="btn btn-primary form-control">Apply</button>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Student</th>
+            {% for date in dates %}
+            <th>{{ date|date:"d M" }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for entry in student_grades %}
+        <tr>
+            <td>{{ entry.student.name }}</td>
+            {% for grade_data in entry.grades %}
+            <td>
+                {{ grade_data.grade|default:"---" }}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

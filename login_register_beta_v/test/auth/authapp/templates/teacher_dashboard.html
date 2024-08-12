@@ -1,0 +1,17 @@
+<!-- templates/teacher_dashboard.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <h1>Teacher Dashboard</h1>
+    <h2>Your Subjects:</h2>
+    <ul>
+        {% for subject in subjects %}
+            <li><a href="{% url 'subject_dashboard' subject_id=subject.id %}">{{ subject.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
